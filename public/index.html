@@ -1,0 +1,191 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="lamb.png">
+
+  <title>Wilk i owce APP</title>
+  <meta name="description" content="HTML">
+  <meta name="AK" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+  <script src="js/scripts.js"></script>
+
+      <h1>~ WILK I OWCE ~</h1>
+
+      <div id="loginSection">
+        Nazwa użytkownika:
+        <input type="text" id="userName" value="Nazwa gracza"/>
+        <br/>
+
+        <input type="radio" id="typeUser1" name="type" value="player"/>
+        <label for="typeUser1">Gracz</label>
+
+
+        <input type="radio" id="typeUser2" name="type" value="spectator"/>
+        <label for="typeUser1">Widz</label>
+        <br/>
+
+        <button type="button" onclick="login();">ZALOGUJ</button>
+      </div>
+
+
+      <div id="roomSection">
+        <button type="button" onclick="newRoom();">Stwórz pokój</button>
+        <div id="roomList"></div>
+      </div>
+      <div class="grid">
+      <div id="gameSection">
+        
+          <table id="gameBoard">
+            <tr>
+              <td>X</td>
+              <td>A</td>
+              <td>B</td>
+              <td>C</td>
+              <td>D</td>
+              <td>E</td>
+              <td>F</td>
+              <td>G</td>
+              <td>H</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td id='A1' class="content"></td>
+              <td id='B1' class="content"></td>
+              <td id='C1' class="content"></td>
+              <td id='D1' class="content"></td>
+              <td id='E1' class="content"></td>
+              <td id='F1' class="content"></td>
+              <td id='G1' class="content"></td>
+              <td id='H1' class="content"></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td id='A2' class="content"></td>
+              <td id='B2' class="content"></td>
+              <td id='C2' class="content"></td>
+              <td id='D2' class="content"></td>
+              <td id='E2' class="content"></td>
+              <td id='F2' class="content"></td>
+              <td id='G2' class="content"></td>
+              <td id='H2' class="content"></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td id='A3' class="content"></td>
+              <td id='B3' class="content"></td>
+              <td id='C3' class="content"></td>
+              <td id='D3' class="content"></td>
+              <td id='E3' class="content"></td>
+              <td id='F3' class="content"></td>
+              <td id='G3' class="content"></td>
+              <td id='H3' class="content"></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td id='A4'class="content"></td>
+              <td id='B4'class="content"></td>
+              <td id='C4'class="content"></td>
+              <td id='D4'class="content"></td>
+              <td id='E4'class="content"></td>
+              <td id='F4'class="content"></td>
+              <td id='G4'class="content"></td>
+              <td id='H4'class="content"></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td id='A5' class="content"></td>
+              <td id='B5' class="content"></td>
+              <td id='C5' class="content"></td>
+              <td id='D5' class="content"></td>
+              <td id='E5' class="content"></td>
+              <td id='F5' class="content"></td>
+              <td id='G5' class="content"></td>
+              <td id='H5' class="content"></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td id='A6' class="content"></td>
+              <td id='B6' class="content"></td>
+              <td id='C6' class="content"></td>
+              <td id='D6' class="content"></td>
+              <td id='E6' class="content"></td>
+              <td id='F6' class="content"></td>
+              <td id='G6' class="content"></td>
+              <td id='H6' class="content"></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td id='A7' class="content"></td>
+              <td id='B7' class="content"></td>
+              <td id='C7' class="content"></td>
+              <td id='D7' class="content"></td>
+              <td id='E7' class="content"></td>
+              <td id='F7' class="content"></td>
+              <td id='G7' class="content"></td>
+              <td id='H7' class="content"></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td id='A8' class="content"></td>
+              <td id='B8' class="content"></td>
+              <td id='C8' class="content"></td>
+              <td id='D8' class="content"></td>
+              <td id='E8' class="content"></td>
+              <td id='F8' class="content"></td>
+              <td id='G8' class="content"></td>
+              <td id='H8' class="content"></td>
+            </tr>
+            <tr>
+              <td>X</td>
+              <td>A</td>
+              <td>B</td>
+              <td>C</td>
+              <td>D</td>
+              <td>E</td>
+              <td>F</td>
+              <td>G</td>
+              <td>H</td>
+            </tr>
+          </table>
+          <div id="controlSection">
+            Aktualnie ruch należy do:<div id="userTurn"></div>
+            Grasz jako:<div id="userRole"></div>
+            Ruch z:
+            <input type="text" id="fromMoveField" required minlength="2" maxlength="2" size="10" />
+            Ruch do:
+            <input type="text" id="toMoveField" required minlength="2" maxlength="2" size="10" />
+            <button type="button" onclick="movePlayer();">Wykonaj ruch</button></br>
+            <button type="button" onclick="undoMove();">Cofnij ruch</button>
+          </div>
+
+      </div>
+
+
+      <div id="commentSection">
+        <h2>Komentarze do gry:</h2>
+        <div id="commentBox" style='overflow:scroll; width:350px;height:200px'></div> 
+        <div id="typeSendButton">
+            <input  type="text" id="userCommentMsgField" style='width: 280px; background-color: #2a2d30; color:rgb(153, 150, 150);' />
+            <input  type="button" onclick="sendComment()" id="sendComment" value="Wyślij" style='background-color: gray;'/>
+        </div>
+      </div>
+
+      <div id="chatSection">
+        <h2>Prywatny chat z przeciwnikiem:</h2>
+        <div id="chatBox" style='overflow:scroll; width:350px;height:200px'></div>
+        <div id="typeSendButton">
+            <input  type="text" id="userChatMsgField" style='width: 280px; background-color: #2a2d30; color:rgb(153, 150, 150);'/>
+            <input  type="button" onclick="sendChat()" id="sendComment" value="Wyślij" style='background-color: gray;'/>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
